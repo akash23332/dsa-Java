@@ -1,4 +1,8 @@
 package BinaryTree;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 class Node {
     int val;
     Node left;
@@ -7,6 +11,14 @@ class Node {
         this.val=val;
     }
 
+}
+class Pair {
+    Node node;
+    int level;
+    Pair(Node node ,int level) {
+        this.node = node;
+        this.level = level;
+    }
 }
 public class Implementation {
     private static void display(Node root){
@@ -45,6 +57,38 @@ public class Implementation {
         if(root==null) return 0;
         return 1+Math.max(levels(root.left),levels(root.right));
     }
+    public static  void levelOrder(Node root){
+        Queue<Node> q=new LinkedList<>();
+        q.add(root);
+        while(q.size()>0){
+            Node front=q.remove();
+            System.out.print(front.val+" ");
+
+            if(front.left!=null)q.add(front.left);
+            if(front.right!=null)q.add(front.right);
+
+        }
+        System.out.println();
+    }
+    public static void levelOrderLinewise(Node root){
+        Queue<Pair> q=new LinkedList<>();
+        int currlevel=0;
+        q.add(new Pair(root,0));
+        while(q.size()>0){
+            Pair front=q.remove();
+            if(front.level!=currlevel){
+                currlevel++;
+                System.out.println();
+            }
+            System.out.print(front.node.val+" ");
+
+            if(front.node.left!=null) q.add(new Pair(front.node.left,front.level+1));
+            if(front.node.right!=null) q.add(new Pair(front.node.right,front.level+1));
+
+        }
+        System.out.println();
+
+    }
     public static void main(String[] args) {
         Node a=new Node(3);
         Node b=new Node(4);
@@ -56,10 +100,34 @@ public class Implementation {
         a.left=b;a.right=c;
         b.left=d;b.right=e;
         c.left=f;c.right=g;
-        display(a);
-        System.out.println();
-        System.out.println(Size(a));
-        System.out.println(sum(a));
-        System.out.println(product(a));
+//        display(a);
+//        System.out.println();
+//        System.out.println(Size(a));
+//        System.out.println(sum(a));
+//        System.out.println(product(a));
+//        levelOrder(a);
+        levelOrderLinewise(a);
+    }
+
+
+    private static void preOrder(Node root){
+        if(root==null) return;
+        System.out.print(root.val+" ");
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+    private static void postOrder(Node root){
+        if(root==null) return;
+
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.print(root.val+" ");
+    }
+    private static void inOrder(Node root){
+        if(root==null) return;
+
+        inOrder(root.left);
+        System.out.print(root.val+" ");
+        inOrder(root.right);
     }
 }
