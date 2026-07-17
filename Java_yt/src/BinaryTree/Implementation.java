@@ -3,6 +3,20 @@ package BinaryTree;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
+class Quad{
+    int sum;
+    int max;
+    int min;
+    int size;
+    Quad(int sum,int max,int min,int size){
+        this.max=max;
+        this.min=min;
+        this.size=size;
+        this.sum=sum;
+    }
+}
+
 class Node {
     int val;
     Node left;
@@ -89,6 +103,26 @@ public class Implementation {
         System.out.println();
 
     }
+    public static void levelterm(Node root,int level,int k){
+        if(root==null) return;
+        if(level==k) System.out.println(root.val);
+        levelterm(root.left,level+1,k);
+        levelterm(root.right,level+1,k);
+    }
+
+
+    public static Quad all(Node root){
+        if(root==null) return new Quad(0,Integer.MAX_VALUE,Integer.MIN_VALUE,0);
+        Quad lst=all(root.left);
+        Quad rst=all(root.right);
+        int max=Math.max(root.val,Math.max(lst.max,rst.max));
+        int min=Math.min(root.val,Math.min(lst.min,rst.min));
+        int size=1+lst.size+rst.size;
+        int sum=root.val+rst.sum+lst.sum;
+        return new Quad(sum, max, min, size);
+
+
+    }
     public static void main(String[] args) {
         Node a=new Node(3);
         Node b=new Node(4);
@@ -106,7 +140,8 @@ public class Implementation {
 //        System.out.println(sum(a));
 //        System.out.println(product(a));
 //        levelOrder(a);
-        levelOrderLinewise(a);
+//        levelOrderLinewise(a);
+        levelterm(a,0,2);
     }
 
 
